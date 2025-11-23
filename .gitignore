@@ -12,3 +12,6 @@ __pycache__/
 
 # Database files
 steam_database.db
+
+#Other
+myTest.py

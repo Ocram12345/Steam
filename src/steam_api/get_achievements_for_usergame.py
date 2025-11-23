@@ -1,27 +1,64 @@
-# Получение достидений для конкретной игры пользователя Steam по его SteamID
-import logging  
+# Получение достижений для конкретной игры пользователя Steam по его SteamID
+import logging
 import requests
 
 # Настройка логирования
 logging.basicConfig(level=logging.INFO)
 
-# Функция получения достижений для конкретной игры пользователя Steam по его SteamID
-def get_achievements_for_usergame(api_key, steam_user_id, app_id):
+
+def get_achievements_for_usergame(api_key, steam_user_id, app_id, language="english"):
+    """Возвращает названия полученных достижений и их количество для указанной игры."""
     try:
-        url = f"http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?key={api_key}&steamid={steam_user_id}&appid={app_id}"
-        response = requests.get(url)
+        url = (
+            "http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/"
+            f"?key={api_key}&steamid={steam_user_id}&appid={app_id}&l={language}"
+        )
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+    except requests.RequestException as request_error:
+        logging.error(
+            "Игра под AppID: %s для пользователя не найдена %s: %s",
+            app_id,
+            steam_user_id,
+            request_error,
+        )
+        return {"names": [], "count": 0}
+
+    try:
         data = response.json()
-        # Проверяем, есть ли в ответе информация о достижениях пользователя для игры
-        if 'playerstats' in data and 'achievements' in data['playerstats']:
-            achievements = data['playerstats']['achievements']
-            logging.info(f"Получено {len(achievements)} достижений для пользователя Steam ID {steam_user_id} в игре AppID {app_id}.")
-            return achievements
-        else:
-            logging.info(f"Достижения для пользователя Steam ID {steam_user_id} в игре AppID {app_id} не найдены.")
-            return []
-    except Exception as e:
-        logging.error(f"Ошибка при получении достижений для Steam ID {steam_user_id} в игре AppID {app_id}: {e}")
-        return []
+    except ValueError:
+        logging.error(
+            "Ответ Steam API по достижениям не является JSON (app %s, user %s).",
+            app_id,
+            steam_user_id,
+        )
+        return {"names": [], "count": 0}
+
+    player_stats = data.get("playerstats", {})
+    achievements = player_stats.get("achievements", [])
+    unlocked_names = []
+
+    for achievement in achievements:
+        if achievement.get("achieved") == 1:
+            name = achievement.get("name") or achievement.get("apiname")
+            if name:
+                unlocked_names.append(name)
+
+    if not unlocked_names:
+        logging.info(
+            "Полученные достижения для пользователя %s и игры %s отсутствуют.",
+            steam_user_id,
+            app_id,
+        )
+    else:
+        logging.info(
+            "Получено %s достижений для пользователя %s в игре %s.",
+            len(unlocked_names),
+            steam_user_id,
+            app_id,
+        )
+
+    return {"names": unlocked_names, "count": len(unlocked_names)}
     
     
     

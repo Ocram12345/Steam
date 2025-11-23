@@ -23,7 +23,7 @@ API_KEY = os.getenv("STEAM_API_KEY")
 TEST_STEAM_USER_ID = os.getenv("STEAM_USER_ID")
 
 # Тестовый AppID
-TEST_APP_ID = 1091500  # Пример AppID для тестирования (Cyberpunk 2077)
+TEST_APP_ID = 1808500  # Пример AppID для тестирования (ARC Riders)
 
 # Тесты для всех функций steam_api
 class TestSteamAPI(unittest.TestCase):
@@ -33,6 +33,16 @@ class TestSteamAPI(unittest.TestCase):
         result = is_real_user(API_KEY, TEST_STEAM_USER_ID)
         self.assertTrue(result)
         
+    #Получений из url профиля Steam его SteamID
+    def test_get_steam_user_id(self):
+        from steam_api.get_user_id import get_user_id
+        profile_url = os.getenv(
+            "STEAM_PROFILE_URL",
+            "https://steamcommunity.com/id/OcramQ/",
+        )
+        steam_user_id = get_user_id(profile_url)
+        self.assertIsInstance(steam_user_id, str)
+    
     # Получение списка игр пользователя Steam по его SteamID
     def test_get_owned_games(self):
         games = get_owned_games(API_KEY, TEST_STEAM_USER_ID)
@@ -41,7 +51,10 @@ class TestSteamAPI(unittest.TestCase):
     # Получение достижений для конкретной игры пользователя Steam по его SteamID
     def test_get_achievements_for_usergame(self):
         achievements = get_achievements_for_usergame(API_KEY, TEST_STEAM_USER_ID, TEST_APP_ID)
-        self.assertIsInstance(achievements, list)
+        self.assertIsInstance(achievements, dict)
+        self.assertIn("names", achievements)
+        self.assertIn("count", achievements)
+        self.assertEqual(len(achievements["names"]), achievements["count"])
         
     # Получение времени игры пользователя Steam по его SteamID и AppID игры
     def test_get_play_time(self):
@@ -62,6 +75,7 @@ class TestSteamAPI(unittest.TestCase):
     def test_get_friend_list(self):
         friends = get_friend_list(API_KEY, TEST_STEAM_USER_ID)
         self.assertIsInstance(friends, list)
+
 
 # Запуск тестов
 if __name__ == "__main__":

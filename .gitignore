@@ -1,0 +1,14 @@
+# Minimal ignore for this project
+.env
+__pycache__/
+*.py[cod]
+
+# Editor / OS
+.vscode/
+.idea/
+
+# Optional logs (keep local, adjust if needed)
+*.log
+
+# Database files
+steam_database.db

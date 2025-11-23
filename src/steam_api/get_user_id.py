@@ -10,7 +10,7 @@ import requests
 logging.basicConfig(level=logging.INFO)
 
 # Функция получения Steam User ID из ссылки профиля Steam
-def get_user_id(profile_url, api_key=None):
+def get_user_id(profile_url, api_key):
     try:
         if not profile_url:
             logging.error("Пустая ссылка профиля Steam.")
@@ -80,8 +80,7 @@ def get_user_id(profile_url, api_key=None):
     except Exception as e:
         logging.error("Ошибка при получении Steam User ID из URL %s: %s", profile_url, e)
         return None
-
-
+# Вспомогательная функция для получения SteamID через XML профиль
 def _resolve_vanity_via_xml(vanity_url, profile_url):
     try:
         vanity_profile_xml = f"https://steamcommunity.com/id/{vanity_url}/?xml=1"

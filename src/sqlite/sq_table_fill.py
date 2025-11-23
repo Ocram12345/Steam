@@ -13,7 +13,7 @@ if SRC_DIR not in sys.path:
     sys.path.insert(0, SRC_DIR)
 
 
-from sq_table_init import initialize_tables
+from sqlite.sq_table_init import initialize_tables
 from steam_api.get_owned_games import get_owned_games
 from steam_api.get_user_name import get_user_name
 from steam_api.is_real_user import is_real_user

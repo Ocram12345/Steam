@@ -6,7 +6,7 @@ import os
 import logging
 
 
-# Обеспечить возможность импорта пакета steam_api при прямом запуске файла.
+# Обеспечить возможность импорта пакета steam при прямом запуске файла.
 CURRENT_DIR = os.path.dirname(__file__)
 SRC_DIR = os.path.abspath(os.path.join(CURRENT_DIR, ".."))
 if SRC_DIR not in sys.path:
@@ -14,27 +14,21 @@ if SRC_DIR not in sys.path:
 
 
 from sqlite.sq_table_init import initialize_tables
-from steam_api.get_owned_games import get_owned_games
-from steam_api.get_user_name import get_user_name
-from steam_api.is_real_user import is_real_user
+from steam.get_owned_games import get_owned_games
+from steam.get_user_name import get_user_name
+from steam.is_real_user import is_real_user
 
 
 # Настройка логирования
 logging.basicConfig(level=logging.INFO)
 
-# Загрузка переменных окружения из файла .env
-load_dotenv()
-API_KEY = os.getenv("STEAM_API_KEY")
-STEAM_USER_ID = os.getenv("STEAM_USER_ID")
-DATABASE_NAME = os.getenv("DATABASE_NAME", "steam_data.db")
 
 # Класс для заполнения таблиц базы данных SQLite данными из Steam API
-class SQLiteTableFiller:
+class SQLiteTableFiller():
     # Инициализация с соединением к базе данных и API-ключом Steam
     def __init__(self, connection, api_key):
         self.connection = connection
         self.api_key = api_key
-        
     # Заполнение таблицы User информацией о пользователе Steam
     def fill_user_table(self, steam_user_id):
         logging.info("Заполнение таблицы User запущено.")
@@ -139,7 +133,7 @@ class SQLiteTableFiller:
 
 
 # Проверка и заполнение базы данных при запуске скрипта
-if __name__ == "__main__":
+"""if __name__ == "__main__":
     if not API_KEY:
         logging.error("Переменная окружения STEAM_API_KEY не задана.")
         sys.exit(1)
@@ -170,7 +164,7 @@ if __name__ == "__main__":
         logging.error("Ошибка при заполнении базы данных: %s", exc)
         sys.exit(1)
     finally:
-        connection.close()
+        connection.close()"""
 
     
   

@@ -3,6 +3,7 @@
 __pycache__/
 *.py[cod]
 
+
 # Editor / OS
 .vscode/
 .idea/
@@ -12,6 +13,7 @@ __pycache__/
 
 # Database files
 steam_database.db
+telegram_bot.db
 
 #Other
 myTest.py

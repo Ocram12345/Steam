@@ -1,20 +1,20 @@
-# Тесты для проверки работы всех функций steam_api
+# Тесты для проверки работы всех функций steam
 import os
 import sys
 import unittest
 from dotenv import load_dotenv
 
-# Обеспечить возможность импорта пакета steam_api при прямом запуске файла теста (By AI)
+# Обеспечить возможность импорта пакета steam при прямом запуске файла теста (By AI)
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-# Импорт всех функций из steam_api для тестирования
-from steam_api.get_achievements_for_usergame import get_achievements_for_usergame
-from steam_api.get_owned_games import get_owned_games
-from steam_api.get_play_time import get_play_time
-from steam_api.is_real_user import is_real_user
-from steam_api.get_user_name import get_user_name
-from steam_api.get_game_name import get_game_name
-from steam_api.get_friend_list import get_friend_list
+# Импорт всех функций из steam для тестирования
+from steam.get_achievements_for_usergame import get_achievements_for_usergame
+from steam.get_owned_games import get_owned_games
+from steam.get_play_time import get_play_time
+from steam.is_real_user import is_real_user
+from steam.get_user_name import get_user_name
+from steam.get_game_name import get_game_name
+from steam.get_friend_list import get_friend_list
 
 
 # Загрузка переменных окружения из файла .env
@@ -25,7 +25,7 @@ TEST_STEAM_USER_ID = os.getenv("STEAM_USER_ID")
 # Тестовый AppID
 TEST_APP_ID = 1808500  # Пример AppID для тестирования (ARC Riders)
 
-# Тесты для всех функций steam_api
+# Тесты для всех функций steam
 class TestSteamAPI(unittest.TestCase):
 
     # Проверка на существование пользователя Steam по его SteamID
@@ -35,7 +35,7 @@ class TestSteamAPI(unittest.TestCase):
         
     #Получений из url профиля Steam его SteamID
     def test_get_steam_user_id(self):
-        from steam_api.get_user_id import get_user_id
+        from steam.get_user_id import get_user_id
         profile_url = os.getenv(
             "STEAM_PROFILE_URL",
             "https://steamcommunity.com/id/OcramQ/",
@@ -85,11 +85,11 @@ if __name__ == "__main__":
 
 """
 Этот код представляет собой набор тестов для проверки работы различных функций, взаимодействующих с Steam API. Вот как он работает:
-1. Импортируются необходимые модули, включая os, sys, unittest и функции из steam_api.
-2. Добавляется путь к steam_api в sys.path, чтобы обеспечить возможность импорта при запуске тестового файла напрямую.
+1. Импортируются необходимые модули, включая os, sys, unittest и функции из steam.
+2. Добавляется путь к steam в sys.path, чтобы обеспечить возможность импорта при запуске тестового файла напрямую.
 3. Загружаются переменные окружения из файла .env с помощью dotenv, включая API-ключ Steam.
-4. Определяется класс TestSteamAPI, наследующий от unittest.TestCase, который содержит методы для тестирования каждой функции из steam_api.
-5. Каждый метод теста вызывает соответствующую функцию из steam_api с тестовыми данными и проверяет тип возвращаемого значения с помощью assertIsInstance или assertTrue.
+4. Определяется класс TestSteamAPI, наследующий от unittest.TestCase, который содержит методы для тестирования каждой функции из steam.
+5. Каждый метод теста вызывает соответствующую функцию из steam с тестовыми данными и проверяет тип возвращаемого значения с помощью assertIsInstance или assertTrue.
 6. В конце файла вызывается unittest.main(), чтобы запустить все тесты при выполнении скрипта.
-Этот набор тестов помогает убедиться, что функции steam_api работают корректно и возвращают ожидаемые типы данных при взаимодействии с Steam API.
+Этот набор тестов помогает убедиться, что функции steam работают корректно и возвращают ожидаемые типы данных при взаимодействии с Steam API.
 """

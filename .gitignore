@@ -12,8 +12,10 @@ __pycache__/
 *.log
 
 # Database files
-steam_database.db
+steam_data.db
 telegram_bot.db
+steam_database.db
+
 
 #Other
 myTest.py
